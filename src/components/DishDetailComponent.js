@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Control , LocalForm, Errors} from 'react-redux-form';
 
 
-    function RenderComments({comments, dishId}){
+    function RenderComments({comments, dishId, addComment}){
         if(comments!= null)     
             return(
                 <div className="col-12 col-md-5 m-1">
@@ -19,7 +19,7 @@ import { Control , LocalForm, Errors} from 'react-redux-form';
                             );
                         })}
                     </ul>
-                    <CommentForm dishId={dishId} ></CommentForm>
+                    <CommentForm dishId={dishId} addComment={addComment}/>
                 </div> 
             );
         else
@@ -63,8 +63,9 @@ import { Control , LocalForm, Errors} from 'react-redux-form';
                 </div>
                 <div className="row">
                     <RenderDish dish={props.dish}/>
-                    <RenderComments comments={props.comments}                                
-                        dishId={props.dish.id} />
+                    <RenderComments comments={props.comments}                                 
+                        dishId={props.dish.id}
+                        addComment={props.addComment} />
                 </div>
             </div>
         );
@@ -93,12 +94,8 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-
         this.toggleModal();
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
-
-
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
